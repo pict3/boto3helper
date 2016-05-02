@@ -3,6 +3,9 @@
 
 import boto3
 from boto3.session import Session
+import botocore
+
+import time
 
 class EC2_Helper:
     ################################################################################
@@ -81,8 +84,7 @@ class EC2_Helper:
     def __describe_instances_force_1st(self):
         try:
             response = self.__ec2_client.describe_instances()
-
-        except:
+        except botocore.exceptions.ClientError:
             time.sleep(EC2_Helper.INTERVAL)
             response = __describe_instances_force_1st()
 
@@ -93,7 +95,7 @@ class EC2_Helper:
             response = self.__ec2_client.describe_instances(
                 NextToken = next_token
             )
-        except:
+        except botocore.exceptions.ClientError:
             time.sleep(EC2_Helper.INTERVAL)
             response = __describe_instances_force(next_token)
 

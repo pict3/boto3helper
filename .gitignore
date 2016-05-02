@@ -1,6 +1,10 @@
+.DS_Store
 *.pyc
 *.egg
 *.egg-info
-build
-dist
-tests/__pycache__
+*.swp
+build/
+dist/
+tests/__pycache__/
+
+tmp_*

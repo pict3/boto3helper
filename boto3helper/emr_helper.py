@@ -22,7 +22,7 @@ class EMR_Helper:
                           aws_secret_access_key = credential['secretKey'],
                           region_name           = credential['region'])
 
-        self.__emr_client = session.client('emr')
+        self.__client = session.client('emr')
 
 
     ################################################################################
@@ -32,7 +32,7 @@ class EMR_Helper:
     # list_clusters
     def __list_clusters_force_1st(self, cluster_states):
         try:
-            clusters = self.__emr_client.list_clusters(
+            clusters = self.__client.list_clusters(
                 ClusterStates = cluster_states
             )
         except botocore.exceptions.ClientError:
@@ -43,7 +43,7 @@ class EMR_Helper:
 
     def __list_clusters_force(self, cluster_states, next_token):
         try:
-            clusters = self.__emr_client.list_clusters(
+            clusters = self.__client.list_clusters(
                 ClusterStates = cluster_states,
                 Marker        = next_token,
             )
@@ -56,7 +56,7 @@ class EMR_Helper:
     # describe_cluster
     def describe_cluster_force(self, cluster_id):
         try:
-            cluster_info = self.__emr_client.describe_cluster(
+            cluster_info = self.__client.describe_cluster(
                 ClusterId  = cluster_id,
             )
         except botocore.exceptions.ClientError:
@@ -68,7 +68,7 @@ class EMR_Helper:
     # list_steps
     def list_steps_force(self, cluster_id, states):
         try:
-            steps = self.__emr_client.list_steps(
+            steps = self.__client.list_steps(
                 ClusterId  = cluster_id,
                 StepStates = states
             )
@@ -104,3 +104,5 @@ class EMR_Helper:
                 break
             # 次のページへのポインタを取得
             next_token = resources['Marker']
+
+        return result

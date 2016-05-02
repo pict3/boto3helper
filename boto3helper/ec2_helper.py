@@ -75,7 +75,7 @@ class EC2_Helper:
                           aws_secret_access_key = credential['secretKey'],
                           region_name           = credential['region'])
 
-        self.__ec2_client = session.client('ec2')
+        self.__client = session.client('ec2')
 
 
     ################################################################################
@@ -83,7 +83,7 @@ class EC2_Helper:
     ################################################################################
     def __describe_instances_force_1st(self):
         try:
-            response = self.__ec2_client.describe_instances()
+            response = self.__client.describe_instances()
         except botocore.exceptions.ClientError:
             time.sleep(EC2_Helper.INTERVAL)
             response = __describe_instances_force_1st()
@@ -92,7 +92,7 @@ class EC2_Helper:
 
     def __describe_instances_force(self, next_token):
         try:
-            response = self.__ec2_client.describe_instances(
+            response = self.__client.describe_instances(
                 NextToken = next_token
             )
         except botocore.exceptions.ClientError:

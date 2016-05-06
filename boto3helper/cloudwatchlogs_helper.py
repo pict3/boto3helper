@@ -5,6 +5,7 @@ import boto3
 from boto3.session import Session
 import botocore
 
+import sys
 import time
 
 class CloudWatchLogs_Helper:
@@ -38,6 +39,8 @@ class CloudWatchLogs_Helper:
                 orderBy      = 'LastEventTime',
             )
         except botocore.exceptions.ClientError:
+            if not 'ThrottlingException' in sys.exc_info():
+                raise
             time.sleep(CloudWatchLogs_Helper.INTERVAL)
             streams = self.__describe_log_streams_force(group_name)
 
@@ -52,6 +55,8 @@ class CloudWatchLogs_Helper:
                 nextToken     = next_token,
             )
         except botocore.exceptions.ClientError:
+            if not 'ThrottlingException' in sys.exc_info():
+                raise
             time.sleep(CloudWatchLogs_Helper.INTERVAL)
             streams = self.__describe_log_streams_force(group_name, next_token)
 
@@ -66,6 +71,8 @@ class CloudWatchLogs_Helper:
                 startFromHead = True
             )
         except botocore.exceptions.ClientError:
+            if not 'ThrottlingException' in sys.exc_info():
+                raise
             time.sleep(CloudWatchLogs_Helper.INTERVAL)
             log_events = self.__get_log_events_force_1st(group_name, stream_name)
 
@@ -80,6 +87,8 @@ class CloudWatchLogs_Helper:
                 startFromHead = True
             )
         except botocore.exceptions.ClientError:
+            if not 'ThrottlingException' in sys.exc_info():
+                raise
             time.sleep(CloudWatchLogs_Helper.INTERVAL)
             log_events = self.__get_log_events_force(group_name, stream_name, next_token)
 

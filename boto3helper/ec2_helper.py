@@ -5,6 +5,7 @@ import boto3
 from boto3.session import Session
 import botocore
 
+import sys
 import time
 
 class EC2_Helper:
@@ -85,8 +86,10 @@ class EC2_Helper:
         try:
             response = self.__client.describe_instances()
         except botocore.exceptions.ClientError:
+            if not 'ThrottlingException' in sys.exc_info():
+                raise
             time.sleep(EC2_Helper.INTERVAL)
-            response = __describe_instances_force_1st()
+            response = self.__describe_instances_force_1st()
 
         return response
 
@@ -96,8 +99,10 @@ class EC2_Helper:
                 NextToken = next_token
             )
         except botocore.exceptions.ClientError:
+            if not 'ThrottlingException' in sys.exc_info():
+                raise
             time.sleep(EC2_Helper.INTERVAL)
-            response = __describe_instances_force(next_token)
+            response = self.__describe_instances_force(next_token)
 
         return response
 

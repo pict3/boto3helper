@@ -64,5 +64,5 @@ setup(
     ],
     keywords=['AWS',],
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
-    install_requires=['boto3', 'botocore', 'time'],
+    install_requires=['boto3', 'botocore'],
  )

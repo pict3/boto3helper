@@ -5,6 +5,7 @@ import boto3
 from boto3.session import Session
 import botocore
 
+import sys
 import time
 
 class EMR_Helper:
@@ -36,6 +37,8 @@ class EMR_Helper:
                 ClusterStates = cluster_states
             )
         except botocore.exceptions.ClientError:
+            if not 'ThrottlingException' in sys.exc_info():
+                raise
             time.sleep(EMR_Helper.INTERVAL)
             clusters = self.__list_clusters_force_1st(cluster_states)
 
@@ -48,6 +51,8 @@ class EMR_Helper:
                 Marker        = next_token,
             )
         except botocore.exceptions.ClientError:
+            if not 'ThrottlingException' in sys.exc_info():
+                raise
             time.sleep(EMR_Helper.INTERVAL)
             clusters = self.__list_clusters_force(cluster_states, next_token)
 
@@ -59,7 +64,9 @@ class EMR_Helper:
             cluster_info = self.__client.describe_cluster(
                 ClusterId  = cluster_id,
             )
-        except botocore.exceptions.ClientError:
+        except:
+            if not 'ThrottlingException' in sys.exc_info():
+                raise
             time.sleep(EMR_Helper.INTERVAL)
             cluster_info = self.describe_cluster_force(cluster_id)
 
@@ -73,6 +80,8 @@ class EMR_Helper:
                 StepStates = states
             )
         except botocore.exceptions.ClientError:
+            if not 'ThrottlingException' in sys.exc_info():
+                raise
             time.sleep(EMR_Helper.INTERVAL)
             steps = self.list_steps_force(cluster_id, states)
 

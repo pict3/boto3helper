@@ -125,12 +125,3 @@ pip install boto3helper
 
 [Yutaka Hiroyama](https://github.com/Hiroyama-Yutaka)
 
-
-
-
-
-インストール：
-pip install
-
-使用例：
-

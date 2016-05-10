@@ -1,8 +1,22 @@
+Name
+====
+
 boto3helper
 
+## Overview
 
+Boto3の使い勝手をよくする関数群。
 
-使用例：
+## Description
+
+スロットリング対応やページャーを考慮したイテレート処理などを実装。
+
+## Requirement
+
+boto3
+
+## Usage
+
 ```
 #!/usr/bin/python
 # coding:utf-8
@@ -27,16 +41,17 @@ def parse_yaml(file_name):
 
     return parse_data
 
-
+# EC2インスタンスごとに実行する関数
 def show_ec2(instance, args):
     print(args['arg1']),
     print(instance[args['arg2']])
 
+# EMRクラスタごとに実行する関数
 def show_emr(cluster, args):
-#    pp.pprint(cluster)
     print(args['arg1']),
     print(cluster[args['arg2']])
 
+# CloudWatchLogsストリームごとに実行する関数
 def func_stream(stream, args):
     print(args['arg1']),
     print(stream[args['arg2']])
@@ -49,9 +64,8 @@ def func_stream(stream, args):
                             arg2 = 'message'
                             )
 
-
+# ログイベントごとに実行する関数
 def func_event(event, args):
-#    pp.pprint(event)
     print(args['arg1']),
     print(event[args['arg2']]),
 
@@ -82,14 +96,12 @@ if __name__ == "__main__":
                                arg1 = 'Cluster ID: ',
                                arg2 = 'Id')
 
-    ret = o.describe_cluster_force('j-2ECY3WKB45H3Z')
-#    pp.pprint(ret)
+    ret = o.describe_cluster_force('j-XXXXXXXXXXXXXXX')
 
     # CloudWatchLogs
-    log_group   = '/aws/lambda/ami-backup-other-account'
-    stream_name = '2015/12/07/[$LATEST]66db92f92710404ba8a063cd7763257a'
+    log_group   = '/aws/lambda/hoge'
+    stream_name = '9999/12/31/[$LATEST]ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ'
     o = boto3helper.cloudwatchlogs_helper.CloudWatchLogs_Helper(credential)
-#    ret = o.describe_log_streams_force('/aws/lambda/ami-backup-other-account')
     o.exec_func_each_streams(log_group,
                             func_stream,
                             arg1 = 'logStreamName: ',
@@ -98,3 +110,27 @@ if __name__ == "__main__":
                             arg4 = log_group
                             )
 ```
+
+## Install
+
+```
+pip install boto3helper
+```
+
+## Licence
+
+[MIT]
+
+## Author
+
+[Yutaka Hiroyama](https://github.com/Hiroyama-Yutaka)
+
+
+
+
+
+インストール：
+pip install
+
+使用例：
+

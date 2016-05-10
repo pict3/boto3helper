@@ -4,6 +4,7 @@
 *.egg-info
 *.swp
 .tox
+.eggs/
 build/
 dist/
 tests/__pycache__/
